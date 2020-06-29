@@ -1,0 +1,15 @@
+.sidebar {
+    position: fixed;
+    left: 0;
+    top: 154px;
+    background-color: #ec2127;
+    height: 100%;
+    width: 400px;
+}
+
+ul li {
+    color: white;
+    font-weight: 600;
+    list-style: none;
+    line-height: 2rem;
+}
