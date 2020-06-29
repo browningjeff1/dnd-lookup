@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import '../css/search.css';
 import axios from 'axios';
-import Results from './results.component.jsx'
+import Spells from './spells.component.jsx';
 
 
 export default class Search extends Component {
@@ -16,6 +16,7 @@ export default class Search extends Component {
             loading: false,
             message: '',
             data: {},
+            isTrue: false,
             
         };
         this.cancel = '';
@@ -92,7 +93,7 @@ export default class Search extends Component {
                 <div className="results-container">
                     {results.map((result) => {
                         return (
-                            <div key={result.id} className="result-items">
+                            <div key={result.index} className="result-items">
                                 <h6 className="search-name">{result.name}</h6>
                                 <div className="desc-wrapper">
                                     <button onClick={this.displaySearchResults}>Read More</button>
@@ -106,8 +107,15 @@ export default class Search extends Component {
         }
     };
 
+    makeTrue = () => {
+        this.setState({
+            isTrue: true,
+        })
+    }
+
     displaySearchResults = () => {
         const {results} = this.state;
+        
         const apiUrl = 'https://www.dnd5eapi.co';
         const resultUrl = results[0].url;
         const searchUrl = apiUrl + resultUrl
@@ -140,16 +148,18 @@ export default class Search extends Component {
                 }
                 console.log(error);
             })
+        
+        this.setState({
+            isSpellsTrue: true,
+        })
 
     }
-
-    
-
-
     render() {
         const { search } = this.state;
         const { category } = this.state;
         const {message } = this.state;
+        const { data } = this.state;
+        
         return (
            <div className="search">
                 <form onSubmit={this.handleSubmit}>
@@ -167,8 +177,16 @@ export default class Search extends Component {
                     </label>
                 </form>
 
-                { this.renderSearchResults() };
-                
+                { this.renderSearchResults() }
+                <div>
+                    { this.state.isSpellsTrue &&
+                        <div>
+                            <div>Casting Time: { data.casting_time }</div>
+                            <Spells />
+                        </div>
+                     
+                    }
+                </div>
                 
 
 
