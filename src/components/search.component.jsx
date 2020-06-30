@@ -5,18 +5,21 @@ import axios from 'axios';
 import Spells from './spells.component.jsx';
 
 
+
 export default class Search extends Component {
     constructor(props) {
         super(props);
         this.handleOnInputChange = this.handleOnInputChange.bind(this);
         this.state = {
             category: 'spells',
-            search: 'Acid+Arrow',
+            search: '',
             results: [],
             loading: false,
             message: '',
             data: {},
-            isTrue: false,
+            isSpellsTrue: false,
+            resultUrl: '',
+            render: true,
             
         };
         this.cancel = '';
@@ -76,6 +79,8 @@ export default class Search extends Component {
             [name]: value,
             loading: true,
             message: '',
+            isSpellsTrue: false,
+            render: true,
         },
         () => {
             const category = this.state.category;
@@ -85,6 +90,7 @@ export default class Search extends Component {
 
         
     }
+        
 
     renderSearchResults = () => {
         const {results} = this.state;
@@ -96,7 +102,11 @@ export default class Search extends Component {
                             <div key={result.index} className="result-items">
                                 <h6 className="search-name">{result.name}</h6>
                                 <div className="desc-wrapper">
-                                    <button onClick={this.displaySearchResults}>Read More</button>
+                                    <button onClick={() => {
+                                        if (this.state.category === 'spells') {
+                                            this.setState({ resultUrl: result.url, isSpellsTrue: true, render: false, });
+                                        } 
+                                    }}>Read More</button>
                                     
                                 </div>
                             </div>
@@ -107,53 +117,12 @@ export default class Search extends Component {
         }
     };
 
-    makeTrue = () => {
+    toggleRender = () => {
         this.setState({
-            isTrue: true,
+            render: true,
         })
     }
 
-    displaySearchResults = () => {
-        const {results} = this.state;
-        
-        const apiUrl = 'https://www.dnd5eapi.co';
-        const resultUrl = results[0].url;
-        const searchUrl = apiUrl + resultUrl
-
-        if (this.cancel) {
-            this.cancel.cancel();
-        }
-
-        this.cancel = axios.CancelToken.source();
-        axios
-            .get(searchUrl, {
-                cancelToken: this.cancel.token,
-            })
-            .then((res) => {
-                console.log(res);
-                const resultNotFoundMsg = !res.data ? 'There are no more search results. Please try a new search.' : '';
-                this.setState({
-                    data: res.data,
-                    message: resultNotFoundMsg,
-                    loading: false,
-                });
-                
-            })
-            .catch((error) => {
-                if(axios.isCancel(error) || error) {
-                    this.setState({
-                        loading: false,
-                        message: 'Failed to fetch results. Please check network',
-                    })
-                }
-                console.log(error);
-            })
-        
-        this.setState({
-            isSpellsTrue: true,
-        })
-
-    }
     render() {
         const { search } = this.state;
         const { category } = this.state;
@@ -177,12 +146,19 @@ export default class Search extends Component {
                     </label>
                 </form>
 
-                { this.renderSearchResults() }
+                
+                <div>
+                    {this.state.render &&
+                        <div>
+                            { this.renderSearchResults() }
+                        </div>
+                    }
+                </div>
+                
                 <div>
                     { this.state.isSpellsTrue &&
                         <div>
-                            <div>Casting Time: { data.casting_time }</div>
-                            <Spells />
+                            <Spells url={this.state.resultUrl} />
                         </div>
                      
                     }
