@@ -6,7 +6,7 @@ export default class Sidebar extends Component {
             <div className="sidebar">
                 <div className="sidebar-container">
                     <ul className="sidbar-links">
-                        <li>Search</li>
+                        <li><a href="#top">Back to top</a></li>
                         <li>Advanced Search</li>
                     </ul>
                 </div>

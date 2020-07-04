@@ -6,12 +6,15 @@ import '../css/search.css';
 
 
 export default class Content extends Component {
+    
+
     render() {
         return (
-            <div className="content">
+            <main className="content">
                 <Search />
                 <Sidebar />
-            </div>
+                <script src="../js/search.js" async></script>
+            </main>
         )
     }
 }

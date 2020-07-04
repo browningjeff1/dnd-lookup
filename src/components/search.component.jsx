@@ -3,6 +3,9 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import '../css/search.css';
 import axios from 'axios';
 import Spells from './spells.component.jsx';
+import Class from './classes.component.jsx';
+import Select from 'react-select';
+
 
 
 
@@ -11,28 +14,23 @@ export default class Search extends Component {
         super(props);
         this.handleOnInputChange = this.handleOnInputChange.bind(this);
         this.state = {
-            category: 'spells',
+            category: '0',
             search: '',
             results: [],
             loading: false,
             message: '',
             data: {},
             isSpellsTrue: false,
+            isClassesTrue: false,
             resultUrl: '',
             render: true,
             
         };
-        this.cancel = '';
-
-        
+        this.cancel = '';  
     }
 
     /**
     * Fetch the search results and update the state with the result.
-    *
-    * //@param {int} updatedPageNo Updated Page No.
-    * //@param {String} query Search Query.
-    *
     */
     fetchSearchResults = ( category, search ) => {
         const searchUrl = `https://www.dnd5eapi.co/api/${category}/?name=${search}`
@@ -71,27 +69,22 @@ export default class Search extends Component {
         const target = event.target;
         const value = target.value;
         const name = target.name;
-        
-        
-        
 
         this.setState({
             [name]: value,
             loading: true,
             message: '',
             isSpellsTrue: false,
+            isClassesTrue: false,
             render: true,
         },
         () => {
             const category = this.state.category;
             const search = this.state.search;
             this.fetchSearchResults(category, search);
-        });
-
-        
+        });   
     }
         
-
     renderSearchResults = () => {
         const {results} = this.state;
         if (Object.keys(results).length && results.length) {
@@ -104,8 +97,10 @@ export default class Search extends Component {
                                 <div className="desc-wrapper">
                                     <button onClick={() => {
                                         if (this.state.category === 'spells') {
-                                            this.setState({ resultUrl: result.url, isSpellsTrue: true, render: false, });
-                                        } 
+                                            this.setState({ resultUrl: result.url, isSpellsTrue: true,isClassesTrue: false, render: false, });
+                                        } else if (this.state.category === 'classes') {
+                                            this.setState({ resultUrl: result.url, isClassesTrue: true, isSpellsTrue: false, render: false, });
+                                        }
                                     }}>Read More</button>
                                     
                                 </div>
@@ -120,20 +115,32 @@ export default class Search extends Component {
     toggleRender = () => {
         this.setState({
             render: true,
+            isClassesTrue: false,
+            isSpellsTrue: false,
         })
     }
+
+    
 
     render() {
         const { search } = this.state;
         const { category } = this.state;
-        const {message } = this.state;
-        const { data } = this.state;
+        const { message } = this.state;
+
+        const options = [
+            {value: 'spells', label: 'Spells'},
+            {value: 'classes', label: 'Classes'},
+            {value: 'races', label: 'Races'},
+            {value: 'monsters', label: 'Monsters'},       
+        ];
         
         return (
            <div className="search">
-                <form onSubmit={this.handleSubmit}>
-                    <label className="category-search" htmlFor="category">
-                        <select name="category" value={category} onChange={this.handleOnInputChange}>
+                <form  onSubmit={this.handleSubmit}>
+                    <label htmlFor="category">
+                        <Select className="category" name="category" value={category} options={options} onChange={this.handleOnInputChange}/>
+                        <select className="category" name="category" value={category} onChange={this.handleOnInputChange}>
+                            <option value="0">Select category: </option>
                             <option value="spells">Spells</option>
                             <option value="classes">Classes</option>
                             <option value="races">Races</option>
@@ -145,8 +152,8 @@ export default class Search extends Component {
                         <FontAwesomeIcon className="search-icon" icon="search" />
                     </label>
                 </form>
+                <button onClick={this.toggleRender}>Go Back</button>
 
-                
                 <div>
                     {this.state.render &&
                         <div>
@@ -159,14 +166,18 @@ export default class Search extends Component {
                     { this.state.isSpellsTrue &&
                         <div>
                             <Spells url={this.state.resultUrl} />
-                        </div>
-                     
+                        </div>     
+                    }
+                </div>
+
+                <div>
+                    { this.state.isClassesTrue &&
+                        <div>
+                            <Class  url={this.state.resultUrl} />
+                        </div>     
                     }
                 </div>
                 
-
-
-
                 {/*Error Message*/}
                 { message && <p className="message">{message}</p> } 
            </div> 

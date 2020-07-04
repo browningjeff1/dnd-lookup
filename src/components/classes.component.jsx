@@ -1,9 +1,15 @@
 import React, {Component} from 'react';
+import Features from './class-components/features.component.jsx';
+import Subclass from './class-components/subclasses.component.jsx';
+import '../css/classes.css';
 
 export default class Class extends Component {
     constructor(props) {
         super(props);
         this.fetchStartingEquipment = this.fetchStartingEquipment.bind(this);
+        this.fetchFeature.bind(this);
+        this.fetchClassLevels.bind(this);
+
         this.state = {
             name: '',
             hit_die: Number,
@@ -18,32 +24,40 @@ export default class Class extends Component {
             starting_equipment_choices: [],
             class_levels_url: '',
             feature_url: '',
-            features: [],
+            features: '',
             featuresTrue: false,
+            classTrue: this.props.classTrue,
+            subclasses_url: '',
         }
     }
 
-    fetchFeature = () => {
-        fetch('https://www.dnd5eapi.co' + this.state.class_levels_url)
+    fetchFeature = (url) => {
+        fetch('https://www.dnd5eapi.co' + url)
             .then((results) => {
+                console.log(results)
                 return results.json()
             })
             .then((data) => {
-                let features = data.map((feat) => {
-                    return (
-                        <div className="feature-container">
-                            <div>{ feat.desc }</div>
-                        </div>
-                    )
-                })
+                console.log(data)
+                let features = data.desc;
 
                 this.setState({
                     features: features,
                 })
+
+                console.log(this.state.features)
+
+                
             })
             .catch((error) => {
                 console.error('Error: ', error)
             })
+
+        return (
+            <div>
+                {this.state.features}
+            </div>
+        )
     }
 
     fetchClassLevels = () => {
@@ -52,25 +66,27 @@ export default class Class extends Component {
                 return results.json();
             })
             .then((data) => {
+                
 
                 let class_levels = data.map((level) => {
+                    
                     return (
                         <div className="level-container">
                             <br/>
                             <div><strong>Level: </strong>{ level.level }</div>
                             <div><strong>Ability Score Bonuses: </strong>{ level.ability_score_bonuses }</div>
                             <div><strong>Proficiency Bonus: </strong>{ level.prof_bonus }</div>
-                            <div>Feature Choices: { level.features.map(feat => {
+                            <div id="feature-choices">Feature Choices: { level.features.map(feat => {
+            
                                     return (
                                         <div>
-                                            <div>{ feat.name }:</div>
-                                            <button onClick={ () => {
-                                                this.setState({
-                                                    feature_url: feat.url
-                                                })
-                                                this.fetchFeature();
-                                            } }>Description</button>
-                                            <div>{ this.featuresTrue && this.features }</div>
+                                            <div><strong>{ feat.name }</strong>:</div>
+                                            <div>
+                                                {  
+                                                    <Features url={feat.url} />
+                                                }
+                                            </div>
+                                            <br />
                                         </div>
                                     )
                             })}</div>
@@ -86,6 +102,7 @@ export default class Class extends Component {
                 console.error('Error: ', error)
             })
     }
+
 
     fetchStartingEquipment = () => {
         fetch('https://www.dnd5eapi.co' + this.state.starting_equipment_url)
@@ -138,6 +155,7 @@ export default class Class extends Component {
     componentDidMount() {
         fetch('https://www.dnd5eapi.co' + this.state.url )
             .then( (results) => {
+                
                 return results.json();
             })
             .then((data) => {
@@ -165,16 +183,27 @@ export default class Class extends Component {
 
                 let starting_equipment_url = data.starting_equipment.url;
                 let class_levels_url = data.class_levels.url;
+                let subclasses = data.subclasses.map((e) => {
+                    return (
+                        <div className="subclasses-container">
+                            <Subclass url={ e.url } />
+                        </div>
+                    )
+                });
                 
 
                 this.setState({
                     starting_equipment_url: starting_equipment_url,
                     class_levels_url: class_levels_url,
+                    subclasses: subclasses,
                 })
 
                 this.fetchStartingEquipment();
 
                 this.fetchClassLevels();
+                
+                
+                
 
                 this.setState({
                     name: name,
@@ -192,13 +221,21 @@ export default class Class extends Component {
     render() {
         return (
             <div className="classContainer">
+                <a href="#proficiency">Proficiencies</a>
+                <a href="#starting-equipment">Starting Equipment</a>
+                <a href="#class-levels">Class Levels</a>
+                <a href="#subclasses"> Subclasses</a>
                 <h3 className="name-container">{ this.state.name }</h3>
                 <p><strong>Hit Die: </strong>{ this.state.hit_die.toString() }</p>
-                <div><strong>Proficiency Choices: </strong>{ this.state.proficiency_choices }</div>
+                <div className="jumpTarget" id="proficiency"><strong>Proficiency Choices: </strong>{ this.state.proficiency_choices }</div>
                 <div><strong>{ this.state.name } is proficient with: </strong>{ this.state.proficiencies }</div>
-                <div><strong>Starting Equipment: </strong>{ this.state.starting_equipment }</div>
+                <div className="jumpTarget" id="starting-equipment"><strong>Starting Equipment: </strong>{ this.state.starting_equipment }</div>
                 <div>{ this.state.starting_equipment_choices }</div>
-                <div><strong>Class Levels: </strong>{ this.state.class_levels }</div>
+                <div  className="jumpTarget" id="class-levels">
+                    <strong>Class Levels: </strong>{ this.state.class_levels }  
+                </div>
+                <div className="jumpTarget" id="subclasses"><strong>Subclasses: </strong>{ this.state.subclasses }</div>
+                
             </div>
         )
     }

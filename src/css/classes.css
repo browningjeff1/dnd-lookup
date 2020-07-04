@@ -1,0 +1,29 @@
+@font-face {
+    font-family: 'Dalelands';
+    src: url('../fonts/DalelandsUncialCondensed-rWYK.ttf') format('truetype');
+}
+
+.jumpTarget::before {
+    content:"";
+    display:block;
+    height:160px; /* fixed header height*/
+    margin:-160px 0 0; /* negative fixed header height */
+  }
+
+.classContainer a {
+    padding: 20px;
+    margin-top: 10px;
+}
+
+.classContainer a:link {
+    color: black;
+}
+
+.classContainer a:visited {
+    color: black;
+}
+
+.name-container {
+    font-family: 'Dalelands';
+    font-size: 2.2rem;
+}
