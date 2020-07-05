@@ -13,6 +13,7 @@ export default class Search extends Component {
     constructor(props) {
         super(props);
         this.handleOnInputChange = this.handleOnInputChange.bind(this);
+        this.handleChange = this.handleChange.bind(this);
         this.state = {
             category: '0',
             search: '',
@@ -24,7 +25,7 @@ export default class Search extends Component {
             isClassesTrue: false,
             resultUrl: '',
             render: true,
-            
+            value: ''
         };
         this.cancel = '';  
     }
@@ -65,10 +66,14 @@ export default class Search extends Component {
             })
     }
 
-    handleOnInputChange = (event) => {
-        const target = event.target;
-        const value = target.value;
+    handleOnInputChange = (e) => {
+        
+        const target = e.target;
+        console.log(target);
         const name = target.name;
+        const value = target.value
+
+        
 
         this.setState({
             [name]: value,
@@ -120,6 +125,14 @@ export default class Search extends Component {
         })
     }
 
+    handleChange = (value) => {
+        console.log(value)
+        this.setState({
+            value: value,
+            
+        })
+    }
+
     
 
     render() {
@@ -128,17 +141,27 @@ export default class Search extends Component {
         const { message } = this.state;
 
         const options = [
-            {value: 'spells', label: 'Spells'},
-            {value: 'classes', label: 'Classes'},
-            {value: 'races', label: 'Races'},
-            {value: 'monsters', label: 'Monsters'},       
+            { value: 'spells', label: 'Spells' },
+            { value: 'classes', label: 'Classes' },
+            { value: 'races', label: 'Races' },
+            { value: 'monsters', label: 'Monsters' },
         ];
         
         return (
            <div className="search">
-                <form  onSubmit={this.handleSubmit}>
+                <form  onSubmit={this.handleOnInputChange}>
                     <label htmlFor="category">
-                        <Select className="category" name="category" value={category} options={options} onChange={this.handleOnInputChange}/>
+                        <Select
+                            className="category" 
+                            name="category" 
+                            defaultValue="spells" 
+                            value={this.state.value.value} 
+                            options={options} 
+                            onChange={this.handleChange}
+                            onInputChange={this.handleOnInputChange}
+                            getOptionValue={option => `${option.value}`}
+                            ref='category'
+                            />
                         <select className="category" name="category" value={category} onChange={this.handleOnInputChange}>
                             <option value="0">Select category: </option>
                             <option value="spells">Spells</option>
