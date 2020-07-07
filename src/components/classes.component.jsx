@@ -2,6 +2,18 @@ import React, {Component} from 'react';
 import Features from './class-components/features.component.jsx';
 import Subclass from './class-components/subclasses.component.jsx';
 import '../css/classes.css';
+import Barbarian from '../images/classLogos/Barbarian.png';
+import Bard from '../images/classLogos/Bard.png';
+import Cleric from '../images/classLogos/Cleric.png';
+import Druid from '../images/classLogos/Druid.png';
+import Fighter from '../images/classLogos/Fighter.png';
+import Paladin from '../images/classLogos/Paladin.png';
+import Monk from '../images/classLogos/Monk.png';
+import Ranger from '../images/classLogos/Ranger.png';
+import Rogue from '../images/classLogos/Rogue.png';
+import Sorcerer from '../images/classLogos/Sorcerer.png';
+import Warlock from '../images/classLogos/Warlock.png';
+import Wizard from '../images/classLogos/Wizard.png';
 
 export default class Class extends Component {
     constructor(props) {
@@ -28,6 +40,7 @@ export default class Class extends Component {
             featuresTrue: false,
             classTrue: this.props.classTrue,
             subclasses_url: '',
+            i: Number
         }
     }
 
@@ -152,6 +165,58 @@ export default class Class extends Component {
             })
     }
 
+    findClassLogo = () => {
+        if (this.state.name ==='Barbarian') {
+            return(
+                <img className="classLogo" src={Barbarian} alt="class logo" type="image/png" />
+            )
+        } else if (this.state.name ==='Bard') {
+            return(
+                <img className="classLogo" src={Bard} alt="class logo" type="image/png" />
+            )
+        } else if (this.state.name ==='Cleric') {
+            return(
+                <img className="classLogo" src={Cleric} alt="class logo" type="image/png" />
+            )
+        } else if (this.state.name ==='Druid') {
+            return(
+                <img className="classLogo" src={Druid} alt="class logo" type="image/png" />
+            )
+        } else if (this.state.name ==='Fighter') {
+            return(
+                <img className="classLogo" src={Fighter} alt="class logo" type="image/png" />
+            )
+        } else if (this.state.name ==='Paladin') {
+            return(
+                <img className="classLogo" src={Paladin} alt="class logo" type="image/png" />
+            )
+        } else if (this.state.name ==='Monk') {
+            return(
+                <img className="classLogo" src={Monk} alt="class logo" type="image/png" />
+            )
+        } else if (this.state.name ==='Ranger') {
+            return(
+                <img className="classLogo" src={Ranger} alt="class logo" type="image/png" />
+            )
+        } else if (this.state.name ==='Rogue') {
+            return(
+                <img className="classLogo" src={Rogue} alt="class logo" type="image/png" />
+            )
+        } else if (this.state.name ==='Sorcerer') {
+            return(
+                <img className="classLogo" src={Sorcerer} alt="class logo" type="image/png" />
+            )
+        } else if (this.state.name ==='Warlock') {
+            return(
+                <img className="classLogo" src={Warlock} alt="class logo" type="image/png" />
+            )
+        } else if (this.state.name ==='Wizard') {
+            return(
+                <img className="classLogo" src={Wizard} alt="class logo" type="image/png" />
+            )
+        }
+    }
+
     componentDidMount() {
         fetch('https://www.dnd5eapi.co' + this.state.url )
             .then( (results) => {
@@ -212,6 +277,9 @@ export default class Class extends Component {
                     proficiencies: proficiencies,
                     starting_equipment_url: starting_equipment_url,
                 })
+                
+                this.findClassLogo();
+                this.classNameIcon();
             })
             .catch((error) => {
                 console.error('Error: ', error);
@@ -221,11 +289,14 @@ export default class Class extends Component {
     render() {
         return (
             <div className="classContainer">
-                <a href="#proficiency">Proficiencies</a>
-                <a href="#starting-equipment">Starting Equipment</a>
-                <a href="#class-levels">Class Levels</a>
-                <a href="#subclasses"> Subclasses</a>
+                <div>
+                    <a href="#proficiency">Proficiencies</a>
+                    <a href="#starting-equipment">Starting Equipment</a>
+                    <a href="#class-levels">Class Levels</a>
+                    <a href="#subclasses"> Subclasses</a>
+                </div>
                 <h3 className="name-container">{ this.state.name }</h3>
+                {this.findClassLogo()}
                 <p><strong>Hit Die: </strong>{ this.state.hit_die.toString() }</p>
                 <div className="jumpTarget" id="proficiency"><strong>Proficiency Choices: </strong>{ this.state.proficiency_choices }</div>
                 <div><strong>{ this.state.name } is proficient with: </strong>{ this.state.proficiencies }</div>
