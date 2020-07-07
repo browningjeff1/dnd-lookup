@@ -1,0 +1,13 @@
+@font-face {
+    font-family: 'Dalelands';
+    src: url('../fonts/DalelandsUncialCondensed-rWYK.ttf') format('truetype');
+}
+
+.name-container {
+    font-family: 'Dalelands';
+}
+
+div ul li {
+    color: black;
+    font-weight: 400;
+}

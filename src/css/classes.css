@@ -26,4 +26,12 @@
 .name-container {
     font-family: 'Dalelands';
     font-size: 2.2rem;
+    display: inline;
+}
+
+.classLogo {
+    max-width: 30px;
+    display: inline;
+    padding-left: 30px;
+    padding-top: 30px;
 }
