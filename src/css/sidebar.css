@@ -7,11 +7,12 @@
     width: 400px;
 }
 
-ul li {
+.sidebar-container li {
     color: white;
     font-weight: 600;
     list-style: none;
     line-height: 2rem;
+
 }
 
 a {
