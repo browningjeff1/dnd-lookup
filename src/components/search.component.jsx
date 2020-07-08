@@ -6,6 +6,7 @@ import Spells from './spells.component.jsx';
 import Class from './classes.component.jsx';
 import Select from 'react-select';
 import Monsters from './monsters.component.jsx';
+import Races from './races.component.jsx'
 
 const customStyles = {
   option: (provided, state) => ({
@@ -46,6 +47,7 @@ export default class Search extends Component {
       isSpellsTrue: false,
       isClassesTrue: false,
       isMonstersTrue: false,
+      isRacesTrue: false,
       resultUrl: '',
       render: true,
       value: ''
@@ -89,9 +91,29 @@ export default class Search extends Component {
       })
   }
 
+  handleOnSearchInputChange = (event) => {
+    const target = event.target;
+    const name = target.name;
+    const value = target.value;
+
+    this.setState({
+      [name]: value,
+      loading: true,
+      message: '',
+      isSpellsTrue: false,
+      isClassesTrue: false,
+      render: true,
+      category: this.state.category,
+    },
+    () => { 
+      this.fetchSearchResults(this.state.category, this.state.search) 
+    }); 
+    
+  }
+
   handleOnInputChange = (selected) => {
     const value = selected.value;
-    const name = selected.label
+    const name = selected.label;
   
     this.setState({
       [value]: value,
@@ -99,11 +121,12 @@ export default class Search extends Component {
       message: '',
       isSpellsTrue: false,
       isClassesTrue: false,
+      isMonstersTrue: false,
+      isRacesTrue: false,
       render: true,
       category: name
     },
     () => { 
-      console.log(this.state)
       this.fetchSearchResults(this.state.category, this.state.search) 
     });   
     }
@@ -114,6 +137,7 @@ export default class Search extends Component {
       const spells = this.state.category === 'Spells'
       const classes = this.state.category === 'Classes'
       const monsters = this.state.category === 'Monsters'
+      const races = this.state.category === 'Races'
   
       return (
   
@@ -123,13 +147,14 @@ export default class Search extends Component {
               <div key={result.index} className="result-items">
                 <h6 className="search-name">{result.name}</h6>
                 <div className="desc-wrapper">
-                  { (spells || classes || monsters) && 
+                  { (spells || classes || monsters || races) && 
                     <button onClick={() => {
                       this.setState({ 
                         resultUrl: result.url, 
                         isSpellsTrue: spells,
                         isClassesTrue: classes,
-                        isMonstersTrue: monsters, 
+                        isMonstersTrue: monsters,
+                        isRacesTrue: races, 
                         render: false 
                       })
                       console.log(this.state);
@@ -150,6 +175,7 @@ export default class Search extends Component {
       isClassesTrue: false,
       isSpellsTrue: false,
       isMonstersTrue: false,
+      isRacesTrue: false,
     })
   }
 
@@ -166,6 +192,10 @@ export default class Search extends Component {
       return (
         <Monsters url={this.state.resultUrl} />
       )
+    } else if (this.state.isRacesTrue) {
+      return (
+        <Races url={this.state.resultUrl} />
+      )
     }
   }
 
@@ -180,6 +210,7 @@ export default class Search extends Component {
       { value: 'classes', label: 'Classes' },
       { value: 'races', label: 'Races' },
       { value: 'monsters', label: 'Monsters' },
+      { value: 'equipment', label: 'Equipment' }
     ];
     
     return (
@@ -195,7 +226,7 @@ export default class Search extends Component {
             />
           </label>
           <label className="search-label" htmlFor="search">
-            <input name="search" type="text" value={search} id="search-input" placeholder="Search..." onChange={this.handleOnInputChange2} />
+            <input name="search" type="text" value={search} id="search-input" placeholder="Search..." onChange={this.handleOnSearchInputChange} />
             <FontAwesomeIcon className="search-icon" icon="search" />
           </label>
         </form>
