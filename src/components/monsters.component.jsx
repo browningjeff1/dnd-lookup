@@ -31,7 +31,7 @@ export default class Monsters extends Component {
       condition_immunities: [],
       senses: [],
       languages: '',
-      challange_rating: Number,
+      challenge_rating: Number,
       special_abilities: [],
       actions: [],
       legendary_actions: [],
@@ -98,6 +98,33 @@ export default class Monsters extends Component {
             <li>{ this.capitalizeFLetter(el.join(': ')) }</li>
           )
         })
+        let languages = this.capitalizeFLetter(data.languages);
+        let challenge_rating = data.challenge_rating;
+        let special_abilities = data.special_abilities.map((e) => {
+          return (
+            <div>
+              <div>{ e.name }</div>
+              <div>Description: { e.desc }</div>
+            </div>
+          )
+        })
+        let actions = data.actions.map((e) => {
+          return (
+            <div>
+              <div>{ e.name }</div>
+              <div>Description: { e.desc }</div>
+            </div>
+          )
+        })
+        let legendary_actions = data.legendary_actions ? data.legendary_actions.map((e) => {
+          return (
+            <div>
+              <div>{ e.name }</div>
+              <div>Description: { e.desc }</div>
+            </div>
+          )
+        }) : []
+        
         
 
         
@@ -126,31 +153,44 @@ export default class Monsters extends Component {
           damage_immunities: damage_immunities,
           condition_immunities: condition_immunities,
           senses: senses,
-        })
+          languages: languages,
+          challenge_rating: challenge_rating,
+          special_abilities: special_abilities,
+          actions: actions,
+          legendary_actions: legendary_actions 
+        }) 
       })
       .catch((err) => {
         console.error('Error: ', err)
       })
   }
 
+
+
   loopNestArr = (array) => {
-    let arr = array   
-    let arr_length = arr.length
-    for (let i = 0; i < arr_length; i++) {
-      let el = arr[i];
-      let el_length = el.length;
-      for (let j = 0; j < el_length; j++) {
-        let item = el.shift();
-        let thing = item.replace('_', ' ');
-        let word = this.capitalizeFLetter(thing)
-        el.splice(0, 0, word)
+    if (array) {
+      let arr = array   
+      let arr_length = arr.length
+      for (let i = 0; i < arr_length; i++) {
+        let el = arr[i];
+        let el_length = el.length;
+        for (let j = 0; j < el_length; j++) {
+          let item = el.shift();
+          let thing = item.replace('_', ' ');
+          let word = this.capitalizeFLetter(thing)
+          el.splice(0, 0, word)
+        }
       }
-    }
     return arr
+    } else {
+      return null
+    }
+    
   }
 
   capitalizeFLetter = (s) => {
-    var splitStr = s.toLowerCase().split(' ');
+    if(s) {
+      var splitStr = s.toLowerCase().split(' ');
     for (var i = 0; i < splitStr.length; i++) {
        // You do not need to check if i is larger than splitStr length, as your for does that for you
        // Assign it back to the array
@@ -158,6 +198,10 @@ export default class Monsters extends Component {
     }
     // Directly return the joined string
     return splitStr.join(' '); 
+    } else {
+      return s
+    }
+    
 
     
   }
@@ -196,6 +240,11 @@ export default class Monsters extends Component {
             { this.state.senses }
           </ul>
         </div>
+        <div><strong>Languages: </strong>{ this.state.languages }</div>
+        <div><strong>Challenge Rating: </strong>{ this.state.challenge_rating.toString() }</div>
+        <div><strong>Special Abilities: </strong>{ this.state.special_abilities }</div>
+        <div><strong>Actions: </strong>{ this.state.actions }</div>
+        <div><strong>Legendary Actions: </strong>{ this.state.legendary_actions }</div>
       </div>
     )
   }
