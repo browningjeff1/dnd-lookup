@@ -1,20 +1,24 @@
 .search {
-    margin-top: 200px;
-    margin-left: 200px;
+	width: 80%;
+    
     position: relative;
-    top: 200px;
-	left: 250px;
+    top: 100px;
+		
 	
 }
 
 .search button {
 	margin-bottom: 20px;
+	display: inline;
 }
 
 .search {
 	margin: 36px auto;
-	width: 100%;
-	max-width: 600px;
+	width: 90%;
+	max-width: 700px;
+	box-shadow: 1px 10px 10px black;
+	height: 100%;
+	padding: 50px;
 }
 .search-label {
 	position: relative;
@@ -22,22 +26,27 @@
 .search input {
 	width: 100%;
 	padding: 16px;
-	font-size: 36px;
+	font-size: 1em;
 	font-style: italic;
 	color: #444;
 	box-sizing: border-box;
 	outline: none;
+	
 }
 .search-icon {
 	position: absolute;
-	top: -10px;
+	top: -1px;
 	font-size: 24px;
 	color: #555;
 	right: 18px;
 }
 .search-name {
-	font-size: 1.2rem;
+	font-size: 1.8rem;
 	text-align: center;
+	display: inline;
+	color: white;
+	letter-spacing: 0.05em;
+	text-shadow: 0 1px 10px black;
 }
 
 
@@ -45,17 +54,19 @@
 .result-items .desc-wrapper {
 	text-align: center;
 	align-items: center;
+	margin-top: 20px;
 }
 
 button {
 	padding: 10px;
-	border: solid 1px red;
+	border: solid 1px #e00000 ;
 	font-family: 'Lato', sans-serif;
 	background-color: black;
 	border-radius: 10%;
 	color: white;
 	margin-top: 10px;
 	cursor: pointer;
+	margin-left: 20px;
 }
 
 .category {
@@ -70,7 +81,6 @@ button {
 	max-width: 100%;
 	box-sizing: border-box;
 	margin: 0;
-	border: 1px solid #aaa;
 	box-shadow: 0 1px 0 1px rgba(0,0,0,.04);
 	border-radius: .5em;
 	-moz-appearance: none;

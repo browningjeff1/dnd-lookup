@@ -14,6 +14,8 @@ import Rogue from '../images/classLogos/Rogue.png';
 import Sorcerer from '../images/classLogos/Sorcerer.png';
 import Warlock from '../images/classLogos/Warlock.png';
 import Wizard from '../images/classLogos/Wizard.png';
+// import fetchStartingEquipment from './class-functions/classFunctions'
+import AuthService from '../services/auth.service';
 
 export default class Class extends Component {
     constructor(props) {
@@ -40,7 +42,10 @@ export default class Class extends Component {
             featuresTrue: false,
             classTrue: this.props.classTrue,
             subclasses_url: '',
-            i: Number
+            i: Number,
+            currentUser: AuthService.getCurrentUser(),
+            saved: AuthService.displaySaved(),
+            
         }
     }
 
@@ -142,9 +147,7 @@ export default class Class extends Component {
                                 {e.from.map((e) => {
                                     return(
                                         <div>
-                                        <br />
                                             <div>{e.item.name}</div>
-                                            <div>Quantity: {e.quantity}</div>
                                         </div>
                                         
                                     )
@@ -219,8 +222,7 @@ export default class Class extends Component {
 
     componentDidMount() {
         fetch('https://www.dnd5eapi.co' + this.state.url )
-            .then( (results) => {
-                
+            .then((results) => {  
                 return results.json();
             })
             .then((data) => {
@@ -256,19 +258,15 @@ export default class Class extends Component {
                     )
                 });
                 
-
                 this.setState({
                     starting_equipment_url: starting_equipment_url,
                     class_levels_url: class_levels_url,
                     subclasses: subclasses,
                 })
-
+                
                 this.fetchStartingEquipment();
 
                 this.fetchClassLevels();
-                
-                
-                
 
                 this.setState({
                     name: name,
@@ -286,9 +284,42 @@ export default class Class extends Component {
             })    
     }
 
+    handleSaveClick = (e) => {
+        e.preventDefault()
+        const { currentUser } = this.state
+        console.log(currentUser)
+        const url = this.state.url
+        AuthService.save(url, currentUser)
+    }
+
+    handleUnsaveClick = (e) => {
+        e.preventDefault();
+        const { currentUser } = this.state
+        console.log(currentUser)
+        const url = this.state.url;
+        AuthService.unsave(url, currentUser);
+    }
+
+    button = () => {
+        const { saved } = this.state;
+        const { url } = this.state;
+        const button = []
+        if (saved) {
+            if (saved.includes(url)) {               
+                button.push(<button onClick={this.handleUnsaveClick}>Unsave</button>)              
+            } else {               
+                button.push(<button onClick={this.handleSaveClick}>Save</button>)          
+            }   
+        } else {
+            button.push(<button onClick={this.handleSaveClick}>Save</button>)           
+        }       
+        return button
+    }
+
     render() {
         return (
-            <div className="classContainer">
+            <div id={this.props.id} className="classContainer">
+                {this.button()}
                 <div>
                     <a href="#proficiency">Proficiencies</a>
                     <a href="#starting-equipment">Starting Equipment</a>
@@ -296,17 +327,20 @@ export default class Class extends Component {
                     <a href="#subclasses"> Subclasses</a>
                 </div>
                 <h3 className="name-container">{ this.state.name }</h3>
-                {this.findClassLogo()}
-                <p><strong>Hit Die: </strong>{ this.state.hit_die.toString() }</p>
-                <div className="jumpTarget" id="proficiency"><strong>Proficiency Choices: </strong>{ this.state.proficiency_choices }</div>
-                <div><strong>{ this.state.name } is proficient with: </strong>{ this.state.proficiencies }</div>
-                <div className="jumpTarget" id="starting-equipment"><strong>Starting Equipment: </strong>{ this.state.starting_equipment }</div>
-                <div>{ this.state.starting_equipment_choices }</div>
-                <div  className="jumpTarget" id="class-levels">
+                <div className="logo-container">
+                    {this.findClassLogo()}
+                </div>
+                <p className="border"><strong>Hit Die: </strong>{ this.state.hit_die.toString() }</p>
+                <div className="jumpTarget border" id="proficiency"><strong>Proficiency Choices: </strong>{ this.state.proficiency_choices }</div>
+                <div className="border"><strong>{ this.state.name } is proficient with: </strong>{ this.state.proficiencies }</div>
+                <div className="border">
+                    <div className="jumpTarget" id="starting-equipment"><strong>Starting Equipment: </strong>{ this.state.starting_equipment }</div>
+                    <div>{ this.state.starting_equipment_choices }</div>
+                </div>
+                <div  className="jumpTarget border" id="class-levels">
                     <strong>Class Levels: </strong>{ this.state.class_levels }  
                 </div>
-                <div className="jumpTarget" id="subclasses"><strong>Subclasses: </strong>{ this.state.subclasses }</div>
-                
+                <div className="jumpTarget border" id="subclasses"><strong>Subclasses: </strong>{ this.state.subclasses }</div>               
             </div>
         )
     }

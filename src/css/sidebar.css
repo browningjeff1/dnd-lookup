@@ -2,10 +2,10 @@
     position: fixed;
     left: 0;
     top: 154px;
-    background-color: #ec2127;
+    background-color: #121212;
     height: 100%;
-    width: 400px;
-}
+    width: 20%;
+} 
 
 .sidebar-container li {
     color: white;

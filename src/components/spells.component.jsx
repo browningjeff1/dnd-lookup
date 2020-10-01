@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import '../css/spells.css';
 
+import AuthService from '../services/auth.service';
 export default class Spells extends Component {
     constructor(props) {
         super(props);
@@ -21,6 +22,7 @@ export default class Spells extends Component {
             subclasses: [],
             id: '', 
             url: this.props.url,
+            currentUser: AuthService.getCurrentUser()
         }
     }
 
@@ -103,27 +105,36 @@ export default class Spells extends Component {
             })
         }
 
+    handleClick = (e) => {
+        e.preventDefault()
+        const { currentUser } = this.state
+        console.log(currentUser)
+        const url = this.state.url
+        AuthService.save(url, currentUser)
+    }
+
     render() {
         return (
-            <div key={this.state.id} className="spellContainer">
+            <div key={this.state.id} id={this.props.id} className="spellContainer">
+                <button type="submit" onClick={this.handleClick}>Save</button>
                 <h3 className="name-container">{ this.state.name }</h3>
-                <div className="casting-time-container"><strong>Casting Time: </strong>{ this.state.casting_time }</div>
-                <div className="classes-container">
-                    <strong>Classes: </strong>{this.state.classes}
+                <div className="casting-time-container border"><strong className='block'>Casting Time: </strong>{ this.state.casting_time }</div>
+                <div className="classes-container border">
+                    <strong className='block'>Classes: </strong>{this.state.classes}
                 </div>
-                <div className="components-container">
-                    <strong>Components: </strong>{ this.state.components }
+                <div className="components-container border">
+                    <strong className='block'>Components: </strong>{ this.state.components }
                 </div>
-                <div className="concentration-container"><strong>Require concentration: </strong>{ this.state.concentration.toString() }</div>
-                <div className="desc-container"><strong>Description: </strong>{ this.state.description }</div>
-                <div className="duration-container"><strong>Duration: </strong>{ this.state.duration }</div>
-                <div className="higher-level-container"><strong>Higher Level: </strong>{ this.state.higher_level }</div>
-                <div className="level-container"><strong>Level Requirement: </strong>{ this.state.level.toString() }</div>
-                <div className="material-container"><strong>Materials Required: </strong>{ this.state.material }</div>
-                <div className="range-container"><strong>Range: </strong>{ this.state.range }</div>
-                <div className="ritual-container"><strong>Require Ritual: </strong>{ this.state.ritual.toString() }</div>
-                <div className="school-container"><strong>School: </strong>{ this.state.school }</div>
-                <div className="subclasses-container"><strong>Subclasses: </strong>{ this.state.subclasses }</div>
+                <div className="concentration-container border"><strong className='block'>Require concentration: </strong>{ this.state.concentration.toString() }</div>
+                <div className="desc-container border"><strong className='block'>Description: </strong>{ this.state.description }</div>
+                <div className="duration-container border"><strong className='block'>Duration: </strong>{ this.state.duration }</div>
+                <div className="higher-level-container border"><strong className='block'>Higher Level: </strong>{ this.state.higher_level }</div>
+                <div className="level-container border"><strong className='block'>Level Requirement: </strong>{ this.state.level.toString() }</div>
+                <div className="material-container border"><strong className='block'>Materials Required: </strong>{ this.state.material }</div>
+                <div className="range-container border"><strong className='block'>Range: </strong>{ this.state.range }</div>
+                <div className="ritual-container border"><strong className='block'>Require Ritual: </strong>{ this.state.ritual.toString() }</div>
+                <div className="school-container border"><strong className='block'>School: </strong>{ this.state.school }</div>
+                <div className="subclasses-container border"><strong className='block'>Subclasses: </strong>{ this.state.subclasses }</div>
             </div>
         )
     }

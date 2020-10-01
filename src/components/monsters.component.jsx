@@ -48,7 +48,7 @@ export default class Monsters extends Component {
         let name = data.name;
         let size = data.size;
         let type = data.type;
-        let subtype = data.subtype;
+        let subtype = data.subtype ? data.subtype : 'None';
         let alignment = data.alignment;
         let armor_class = data.armor_class;
         let hit_points = data.hit_points;
@@ -70,26 +70,34 @@ export default class Monsters extends Component {
             </div>
           )
         })
-        let damage_vulnerabilities = data.damage_vulnerabilities.map((e) => {
-          return (
-            <div>{ e }</div>
-          )
-        })
-        let damage_resistances = data.damage_resistances.map((e) => {
-          return (
-            <div>{ e }</div>
-          )
-        })
-        let damage_immunities = data.damage_immunities.map((e) => {
-          return (
-            <div>{ this.capitalizeFLetter(e) }</div>
-          )
-        })
-        let condition_immunities = data.condition_immunities.map((e) => {
-          return (
-            <div>{ this.capitalizeFLetter(e) }</div>
-          )
-        })
+        let damage_vulnerabilities = data.damage_vulnerabilities.length ? <div><strong>Damage Vulnerabilities: </strong>
+          {data.damage_vulnerabilities.map((e) => {
+            return (
+              <div>{ e }</div>
+            )
+          })}
+        </div> : null;
+        let damage_resistances = data.damage_resistances.length ? <div><strong>Damage Resistances: </strong>
+          {data.damage_resistances.map((e) => {
+            return (
+              <div>{ e }</div>
+            )
+          })}
+        </div> : null;
+        let damage_immunities = data.damage_immunities.length ? <div><strong>Damage Immunities: </strong>
+          {data.damage_immunities.map((e) => {
+            return (
+              <div>{ this.capitalizeFLetter(e) }</div>
+            )
+          })}
+        </div> : null;
+        let condition_immunities = data.condition_immunities.length ? <div><strong>Condition Immunities: </strong>
+          {data.condition_immunities.map((e) => {
+            return (
+              <div>{ this.capitalizeFLetter(e) }</div>
+            )
+          })}
+        </div> : null;
         let map_senses = new Map(Object.entries(data.senses));
         let arr_senses = Array.from(map_senses);
         let fixed_arr = this.loopNestArr(arr_senses);
@@ -103,7 +111,7 @@ export default class Monsters extends Component {
         let special_abilities = data.special_abilities.map((e) => {
           return (
             <div>
-              <div>{ e.name }</div>
+              <div><strong>{ e.name }</strong></div>
               <div>Description: { e.desc }</div>
             </div>
           )
@@ -111,7 +119,7 @@ export default class Monsters extends Component {
         let actions = data.actions.map((e) => {
           return (
             <div>
-              <div>{ e.name }</div>
+              <div><strong>{ e.name }</strong></div>
               <div>Description: { e.desc }</div>
             </div>
           )
@@ -119,7 +127,7 @@ export default class Monsters extends Component {
         let legendary_actions = data.legendary_actions ? data.legendary_actions.map((e) => {
           return (
             <div>
-              <div>{ e.name }</div>
+              <div><strong>{ e.name }</strong></div>
               <div>Description: { e.desc }</div>
             </div>
           )
@@ -210,41 +218,43 @@ export default class Monsters extends Component {
     return (
       <div>
         <div className="name-container">{ this.state.name }</div>
-        <div><strong>Size: </strong>{ this.state.size }</div>
-        <div id="type" ><strong>Type: </strong>{ this.capitalizeFLetter(this.state.type) }</div>
-        <div><strong>Subtype: </strong>{ this.capitalizeFLetter(this.state.subtype) }</div>
-        <div><strong>Alignment: </strong>{ this.capitalizeFLetter(this.state.alignment) }</div>
-        <div><strong>Armor Class: </strong>{ this.state.armor_class.toString() }</div>
-        <div><strong>Hit Points: </strong>{ this.state.hit_points.toString() }</div>
-        <div><strong>Hit Dice: </strong>{ this.state.hit_dice }</div>
-        <div>
-          <ul className="speed-container">
+        <div className='border'><strong>Size: </strong>{ this.state.size }</div>
+        <div className='border' id="type" ><strong>Type: </strong>{ this.capitalizeFLetter(this.state.type) }</div>
+        <div className='border'><strong>Subtype: </strong>{ this.capitalizeFLetter(this.state.subtype) }</div>
+        <div className='border'><strong>Alignment: </strong>{ this.capitalizeFLetter(this.state.alignment) }</div>
+        <div className='border'><strong>Armor Class: </strong>{ this.state.armor_class.toString() }</div>
+        <div className='border'><strong>Hit Points: </strong>{ this.state.hit_points.toString() }</div>
+        <div className='border'><strong>Hit Dice: </strong>{ this.state.hit_dice }</div>
+        <div className='border'>
+            <strong>Speeds: </strong>
             <li>Walking Speed: { this.state.walk_speed }</li>
             <li>Flying Speed: { this.state.fly_speed }</li>
             <li>Swimming Speed: { this.state.swim_speed }</li>
-          </ul>
+          
         </div>
-        <div><strong>Strength: </strong>{ this.state.strength.toString() }</div>
-        <div><strong>Dexterity: </strong>{ this.state.dexterity.toString() }</div>
-        <div><strong>Constitution: </strong>{ this.state.constitution.toString() }</div>
-        <div><strong>Intelligence: </strong>{ this.state.intelligence.toString() }</div>
-        <div><strong>Wisdom: </strong>{ this.state.wisdom.toString() }</div>
-        <div><strong>Charisma:</strong>{ this.state.charisma.toString() }</div>
-        <div><strong>Proficiencies: </strong>{ this.state.proficiencies }</div>
-        <div><strong>Damage Vulnerabilities: </strong>{ this.state.damage_vulnerabilities }</div>
-        <div><strong>Damage Resistances: </strong>{ this.state.damage_resistances }</div>
-        <div><strong>Damage Immunities: </strong>{ this.state.damage_immunities }</div>
-        <div><strong>Condition Immunities: </strong>{ this.state.condition_immunities }</div>
-        <div><strong>Senses:</strong>
-          <ul>
+        <div className='border'>
+          <div><strong>Strength: </strong>{ this.state.strength.toString() }</div>
+          <div><strong>Dexterity: </strong>{ this.state.dexterity.toString() }</div>
+          <div><strong>Constitution: </strong>{ this.state.constitution.toString() }</div>
+          <div><strong>Intelligence: </strong>{ this.state.intelligence.toString() }</div>
+          <div><strong>Wisdom: </strong>{ this.state.wisdom.toString() }</div>
+          <div><strong>Charisma:</strong>{ this.state.charisma.toString() }</div>
+        </div>
+        <div className='border'><strong>Proficiencies: </strong>{ this.state.proficiencies }</div>
+        { this.state.damage_vulnerabilities }
+        { this.state.damage_resistances }
+        { this.state.damage_immunities }
+        { this.state.condition_immunities }
+        <div className='border'><strong>Senses:</strong>
+          
             { this.state.senses }
-          </ul>
+          
         </div>
-        <div><strong>Languages: </strong>{ this.state.languages }</div>
-        <div><strong>Challenge Rating: </strong>{ this.state.challenge_rating.toString() }</div>
-        <div><strong>Special Abilities: </strong>{ this.state.special_abilities }</div>
-        <div><strong>Actions: </strong>{ this.state.actions }</div>
-        <div><strong>Legendary Actions: </strong>{ this.state.legendary_actions }</div>
+        <div className='border'><strong>Languages: </strong>{ this.state.languages }</div>
+        <div className='border'><strong>Challenge Rating: </strong>{ this.state.challenge_rating.toString() }</div>
+        <div className='border'><strong>Special Abilities: </strong>{ this.state.special_abilities }</div>
+        <div className='border'><strong>Actions: </strong>{ this.state.actions }</div>
+        <div className='border'><strong>Legendary Actions: </strong>{ this.state.legendary_actions }</div>
       </div>
     )
   }

@@ -1,0 +1,37 @@
+#savedList {
+  display: inline;
+  list-style: none;
+  padding: 0 2px;
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+}
+
+.savedList {
+  display: inline;
+  padding: 0 2px;
+}
+
+.profileContainer {
+  text-align: center;
+}
+
+.showSaved {
+  margin-top: 20px;
+  padding-bottom: 30px;
+  border-bottom: solid 2px white;
+}
+
+.profile {
+  padding: 10px;
+  text-align: left;
+  margin: 0 auto;
+  max-width: 700px;
+  border: solid 1px #9B9B9B;
+  border-radius: 10px;
+  background-color: #DA6A6A;
+}
+
+.jumbotron {
+  text-align: center;
+}

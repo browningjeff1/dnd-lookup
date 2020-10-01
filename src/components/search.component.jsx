@@ -6,14 +6,16 @@ import Spells from './spells.component.jsx';
 import Class from './classes.component.jsx';
 import Select from 'react-select';
 import Monsters from './monsters.component.jsx';
-import Races from './races.component.jsx'
+import Races from './races.component.jsx';
+import Equipment from './equipment.component.jsx';
 
 const customStyles = {
   option: (provided, state) => ({
     ...provided,
-    backgroundColor: state.isFocused ? 'black' : 'red',
+    backgroundColor: state.isFocused ? 'black' : '#ec2127',
     border: 'solid 1px black',
     color: state.isFocused ? 'white' : 'black',
+    letterSpacing: '2px'
   }),
   menuList: (provided) => ({
     ...provided,
@@ -48,6 +50,7 @@ export default class Search extends Component {
       isClassesTrue: false,
       isMonstersTrue: false,
       isRacesTrue: false,
+      isEquipmentTrue: false,
       resultUrl: '',
       render: true,
       value: ''
@@ -60,6 +63,7 @@ export default class Search extends Component {
   */
   fetchSearchResults = ( category, search ) => {
     const searchUrl = `https://www.dnd5eapi.co/api/${category}/?name=${search}`
+    console.log(searchUrl)
 
     if (this.cancel) {
       this.cancel.cancel();
@@ -102,6 +106,9 @@ export default class Search extends Component {
       message: '',
       isSpellsTrue: false,
       isClassesTrue: false,
+      isRacesTrue: false,
+      isMonstersTrue: false,
+      isEquipmentTrue: false,
       render: true,
       category: this.state.category,
     },
@@ -113,7 +120,10 @@ export default class Search extends Component {
 
   handleOnInputChange = (selected) => {
     const value = selected.value;
-    const name = selected.label;
+    let name = selected.label;
+    if(name.includes(' ')) {
+      name = name.replace(' ', '-')
+    }
   
     this.setState({
       [value]: value,
@@ -123,6 +133,7 @@ export default class Search extends Component {
       isClassesTrue: false,
       isMonstersTrue: false,
       isRacesTrue: false,
+      isEquipmentTrue: false,
       render: true,
       category: name
     },
@@ -138,6 +149,7 @@ export default class Search extends Component {
       const classes = this.state.category === 'Classes'
       const monsters = this.state.category === 'Monsters'
       const races = this.state.category === 'Races'
+      const equipment = this.state.category === 'Equipment'
   
       return (
   
@@ -145,16 +157,18 @@ export default class Search extends Component {
           {results.map((result) => {
             return (
               <div key={result.index} className="result-items">
-                <h6 className="search-name">{result.name}</h6>
+                
                 <div className="desc-wrapper">
-                  { (spells || classes || monsters || races) && 
+                <h6 className="search-name">{result.name}</h6>
+                  { (spells || classes || monsters || races || equipment) && 
                     <button onClick={() => {
                       this.setState({ 
                         resultUrl: result.url, 
                         isSpellsTrue: spells,
                         isClassesTrue: classes,
                         isMonstersTrue: monsters,
-                        isRacesTrue: races, 
+                        isRacesTrue: races,
+                        isEquipmentTrue: equipment, 
                         render: false 
                       })
                       console.log(this.state);
@@ -176,6 +190,7 @@ export default class Search extends Component {
       isSpellsTrue: false,
       isMonstersTrue: false,
       isRacesTrue: false,
+      isEquipmentTrue: false,
     })
   }
 
@@ -196,6 +211,10 @@ export default class Search extends Component {
       return (
         <Races url={this.state.resultUrl} />
       )
+    } else if (this.state.isEquipmentTrue) {
+      return(
+        <Equipment url={this.state.resultUrl} />
+      )
     }
   }
 
@@ -210,7 +229,10 @@ export default class Search extends Component {
       { value: 'classes', label: 'Classes' },
       { value: 'races', label: 'Races' },
       { value: 'monsters', label: 'Monsters' },
-      { value: 'equipment', label: 'Equipment' }
+      { value: 'equipment', label: 'Equipment' },
+      { value: 'skills', label: 'Skills' },
+      { value: 'ability scores', label: 'Ability Scores' },
+      { value: 'proficiencies', label: 'Proficiencies' }
     ];
     
     return (
@@ -226,11 +248,11 @@ export default class Search extends Component {
             />
           </label>
           <label className="search-label" htmlFor="search">
-            <input name="search" type="text" value={search} id="search-input" placeholder="Search..." onChange={this.handleOnSearchInputChange} />
+            <input name="search" autoComplete='off' type="text" value={search} id="search-input" placeholder="Search..." onChange={this.handleOnSearchInputChange} />
             <FontAwesomeIcon className="search-icon" icon="search" />
           </label>
         </form>
-        <button onClick={this.toggleRender}>Go Back</button>
+        {!this.state.render && <button onClick={this.toggleRender}>Go Back</button>}
 
         <div>
           {this.state.render &&

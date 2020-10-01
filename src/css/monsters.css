@@ -7,9 +7,9 @@
     font-family: 'Dalelands';
 }
 
-ul li {
+li {
     color: black;
     font-weight: 400;
     list-style: none;
-    line-height: 1em;
+    line-height: 1.2em;
 }

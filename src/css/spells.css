@@ -5,3 +5,19 @@
 .components {
     display: inline;
 }
+
+.border {
+    color: black;
+    background-color: lightgray;
+    border: solid 2px darkgray;
+    padding: 10px;
+    border-radius: 10px;
+    width: 90%;
+    text-align: center;
+    margin: 40px auto 0;
+    box-shadow: 0px 8px 10px black;
+  }
+
+.block {
+    display: block;
+}

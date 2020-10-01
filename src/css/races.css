@@ -1,0 +1,29 @@
+@font-face {
+  font-family: 'Dalelands';
+  src: url('../fonts/DalelandsUncialCondensed-rWYK.ttf') format('truetype');
+}
+
+.name-container {
+  font-family: 'Dalelands';
+  text-align: center;
+  color: red;
+  font-size: 3.5em;
+  margin-bottom: 50px;
+  text-shadow: 0 2px 10px black;
+}
+
+.races-container {
+  padding: 30px;
+}
+
+.border {
+  color: black;
+  background-color: lightgray;
+  border: solid 2px darkgray;
+  padding: 10px;
+  border-radius: 10px;
+  width: 90%;
+  text-align: center;
+  margin: 40px auto 0;
+  box-shadow: 0px 8px 10px black;
+}
