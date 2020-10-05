@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import Features from './class-components/features.component.jsx';
 import Subclass from './class-components/subclasses.component.jsx';
 import '../css/classes.css';
-import { Barbarian, Bard, Cleric, Druid, Fighter, Paladin, Monk, Ranger, Rogue, Sorcerer, Warlock, Wizard } from '../images/classLogos';
+// import { Barbarian, Bard, Cleric, Druid, Fighter, Paladin, Monk, Ranger, Rogue, Sorcerer, Warlock, Wizard } from '../../public/images/classLogos';
 import AuthService from '../services/auth.service';
 import { api } from '../functions/ApiCall.js';
 
@@ -19,122 +19,69 @@ export default class Class extends Component {
     data: null,
     startingEquipment: null,
     classLevels: null,
-    subclasses: null
-  }
-  }
-
-  findClassLogo = () => {
-  let { data } = this.state
-  if (data.name ==='Barbarian') {
-    return(
-    <img className="classLogo" src={Barbarian} alt="class logo" type="image/png" />
-    )
-  } else if (data.name ==='Bard') {
-    return(
-    <img className="classLogo" src={Bard} alt="class logo" type="image/png" />
-    )
-  } else if (data.name ==='Cleric') {
-    return(
-    <img className="classLogo" src={Cleric} alt="class logo" type="image/png" />
-    )
-  } else if (data.name ==='Druid') {
-    return(
-    <img className="classLogo" src={Druid} alt="class logo" type="image/png" />
-    )
-  } else if (data.name ==='Fighter') {
-    return(
-    <img className="classLogo" src={Fighter} alt="class logo" type="image/png" />
-    )
-  } else if (data.name ==='Paladin') {
-    return(
-    <img className="classLogo" src={Paladin} alt="class logo" type="image/png" />
-    )
-  } else if (data.name ==='Monk') {
-    return(
-    <img className="classLogo" src={Monk} alt="class logo" type="image/png" />
-    )
-  } else if (data.name ==='Ranger') {
-    return(
-    <img className="classLogo" src={Ranger} alt="class logo" type="image/png" />
-    )
-  } else if (data.name ==='Rogue') {
-    return(
-    <img className="classLogo" src={Rogue} alt="class logo" type="image/png" />
-    )
-  } else if (data.name ==='Sorcerer') {
-    return(
-    <img className="classLogo" src={Sorcerer} alt="class logo" type="image/png" />
-    )
-  } else if (data.name ==='Warlock') {
-    return(
-    <img className="classLogo" src={Warlock} alt="class logo" type="image/png" />
-    )
-  } else if (data.name ==='Wizard') {
-    return(
-    <img className="classLogo" src={Wizard} alt="class logo" type="image/png" />
-    )
+    subclasses: null,
+    name: null
   }
   }
 
   async componentDidMount() {
-  let data = await api.ApiCall(this.props.url);
-  console.log(data);
-  let startingEquipment
-  let classLevels
-  let subclasses
+    let data = await api.ApiCall(this.props.url);
+    console.log(data);
+    let startingEquipment
+    let classLevels
+    let subclasses
 
-  if (data) {
-    startingEquipment = await api.ApiCall(data.starting_equipment)
-    classLevels = await api.ApiCall(data.class_levels)
-    subclasses = data.subclasses.map((e) => {
-    return (
-      <div className="subclasses-container">
-      <Subclass url={ e.url } />
-      </div>
-    )
-    });
-    
-  }
+    if (data) {
+      startingEquipment = await api.ApiCall(data.starting_equipment)
+      classLevels = await api.ApiCall(data.class_levels)
+      subclasses = data.subclasses.map((e) => {
+      return (
+        <div className="subclasses-container">
+          <Subclass url={ e.url } />
+        </div>
+      )
+      });
+    }
 
-  this.setState({
-    data: data,
-    startingEquipment: startingEquipment,
-    classLevels: classLevels,
-    subclasses: subclasses
-  }) 
-  this.findClassLogo();
+    this.setState({
+      data: data,
+      startingEquipment: startingEquipment,
+      classLevels: classLevels,
+      subclasses: subclasses,
+      name: data.name
+    }) 
   }
 
   handleSaveClick = (e) => {
-  e.preventDefault()
-  const { currentUser } = this.state
-  console.log(currentUser)
-  const url = this.state.url
-  AuthService.save(url, currentUser)
+    e.preventDefault()
+    const { currentUser } = this.state
+    console.log(currentUser)
+    const url = this.state.url
+    AuthService.save(url, currentUser)
   }
 
   handleUnsaveClick = (e) => {
-  e.preventDefault();
-  const { currentUser } = this.state
-  console.log(currentUser)
-  const url = this.state.url;
-  AuthService.unsave(url, currentUser);
+    e.preventDefault();
+    const { currentUser } = this.state
+    console.log(currentUser)
+    const url = this.state.url;
+    AuthService.unsave(url, currentUser);
   }
 
   button = () => {
-  const { saved } = this.state;
-  const { url } = this.state;
-  const button = []
-  if (saved) {
-    if (saved.includes(url)) {               
-    button.push(<button onClick={this.handleUnsaveClick}>Unsave</button>)              
-    } else {               
-    button.push(<button onClick={this.handleSaveClick}>Save</button>)          
-    }   
-  } else {
-    button.push(<button onClick={this.handleSaveClick}>Save</button>)           
-  }       
-  return button
+    const { saved } = this.state;
+    const { url } = this.state;
+    const button = []
+    if (saved) {
+      if (saved.includes(url)) {               
+        button.push(<button onClick={this.handleUnsaveClick}>Unsave</button>)              
+      } else {               
+        button.push(<button onClick={this.handleSaveClick}>Save</button>)          
+      }   
+    } else {
+      button.push(<button onClick={this.handleSaveClick}>Save</button>)           
+    }       
+    return button
   }
 
   render() {
@@ -145,26 +92,26 @@ export default class Class extends Component {
     {data && startingEquipment && subclasses && <div id={this.props.id} className="classContainer">
       {this.button()}
       <div>
-      <a href="#proficiency">Proficiencies</a>
-      <a href="#starting-equipment">Starting Equipment</a>
-      <a href="#class-levels">Class Levels</a>
-      <a href="#subclasses"> Subclasses</a>
+        <a href="#proficiency">Proficiencies</a>
+        <a href="#starting-equipment">Starting Equipment</a>
+        <a href="#class-levels">Class Levels</a>
+        <a href="#subclasses"> Subclasses</a>
       </div>
       <h3 className="name-container">{ data.name }</h3>
       <div className="logo-container">
-      {this.findClassLogo()}
+      <img className="classLogo" src={'../images/classLogos/' + this.state.name + '.png' } alt="class logo" type="image/png" />
       </div>
       <p className="border"><strong>Hit Die: </strong>{ data.hit_die.toString() }</p>
       <div className="jumpTarget border" id="proficiency"><strong>Proficiency Choices: </strong>{ data.proficiency_choices.map((choice) => {
       return (
         <div>
-        <div>Choose from {choice.choose}</div>
-        <div>{ choice.from.map((e) => {
-        return(
-          <div>{e.name}</div>
-        )
-        }) }</div>
-        <br/>
+          <div>Choose from {choice.choose}</div>
+          <div>{ choice.from.map((e) => {
+            return(
+              <div>{e.name}</div>
+            )
+          }) }</div>
+          <br/>
         </div> 
       )
       })}
