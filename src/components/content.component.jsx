@@ -1,21 +1,16 @@
 import React, { Component } from 'react';
 import { Link, withRouter } from 'react-router-dom';
-
-
 import Search from './search.component.jsx';
 import Header from './header.component.jsx';
 import '../css/content.css';
 import '../css/sidebar.css';
 import AuthService from "../services/auth.service";
 
-
-
-
-
 export default withRouter(class Content extends Component {
   constructor(props) {
     super(props);
     this.logOut = this.logOut.bind(this);
+    this.width = this.width.bind(this)
 
     this.state = {
       currentUser: undefined
@@ -32,16 +27,26 @@ export default withRouter(class Content extends Component {
     }
   }
 
+  width() {
+    if (window.innerWidth > 600) {
+      return true
+    } else {
+      return false
+    }
+  }
+
   logOut() {
     AuthService.logout();
   }
   render() {
     const { currentUser } = this.state;
+    let width = this.width();
+
     return (
         <main className="content">
           <Header />
           <Search />
-          <div className="sidebar">
+          {width && <div className="sidebar">
             <div className="sidebar-container">
             {currentUser ? (
               <ul className="navbar-nav ml-auto">
@@ -74,7 +79,7 @@ export default withRouter(class Content extends Component {
               </ul>
             )}
             </div>
-          </div>
+          </div>}
         </main>
 
     )
