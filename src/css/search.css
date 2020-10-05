@@ -1,8 +1,6 @@
 .search {
-	width: 80%;
-    
-    position: relative;
-    top: 100px;
+	position: relative;
+	top: 100px;
 		
 	
 }
@@ -12,14 +10,14 @@
 	display: inline;
 }
 
-.search {
+/* .search {
 	margin: 36px auto;
 	width: 90%;
 	max-width: 700px;
 	box-shadow: 1px 10px 10px black;
 	height: 100%;
 	padding: 50px;
-}
+} */
 .search-label {
 	position: relative;
 }
@@ -88,4 +86,68 @@ button {
 	appearance: none;
 	background-color: #404040;
 }
+
+@media only screen and (max-width: 600px) {
+	.search {
+		margin: 36px auto;
+		width: 90%;
+		max-width: 300px;
+		box-shadow: 1px 10px 10px black;
+		height: 100%;
+		padding: 20px;
+		font-size: 0.9em;
+	}
+
+	button {
+		display: block;
+		padding: 10px;
+		border: solid 1px #e00000 ;
+		font-family: 'Lato', sans-serif;
+		background-color: black;
+		border-radius: 10%;
+		color: white;
+		cursor: pointer;
+		margin: 10px auto 0;
+	}
+
+	.search button {
+		margin-bottom: 20px;
+		display: block;
+	}
+}
+
+@media only screen and (min-width: 768px) {
+	.search {
+		margin: 36px auto;
+		width: 70%;
+		max-width: 700px;
+		box-shadow: 1px 10px 10px black;
+		height: 100%;
+		padding: 50px;
+	}
+}
+
+
+@media only screen and (min-width: 992px) {
+	.search {
+		margin: 36px auto;
+		width: 70%;
+		max-width: 500px;
+		box-shadow: 1px 10px 10px black;
+		height: 100%;
+		padding: 50px;
+	}
+}
+
+@media only screen and (min-width: 1200px) {
+	.search {
+		margin: 36px auto;
+		width: 80%;
+		max-width: 700px;
+		box-shadow: 1px 10px 10px black;
+		height: 100%;
+		padding: 50px;
+	}
+}
+
 
