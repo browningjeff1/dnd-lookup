@@ -22,6 +22,7 @@
 backend/Dockerfile
 backend/node_modules
 backend/config/db.config.js
+backend/config/auth.config.js
 
 npm-debug.log*
 yarn-debug.log*
