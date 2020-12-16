@@ -32,6 +32,11 @@ export default class Features extends Component {
             })
     }
 
+    componentWillUnmount() {
+        const abortController = new AbortController()
+        abortController.abort()
+    }
+
     render() {
         return (
             <div className="class-levels-container">

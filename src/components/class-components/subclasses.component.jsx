@@ -30,25 +30,30 @@ export default class Subclass extends Component{
                         </div>
                     )
                 })
-                let features = data.features.map((e) => {
-                    return(
-                        <div>
-                            <div><strong>{ e.name }</strong></div>
-                            <SubclassFeatures url={e.url} />
-                        </div>
-                    )
-                })
+                // let features = data.features.map((e) => {
+                //     return(
+                //         <div>
+                //             <div><strong>{ e.name }</strong></div>
+                //             <SubclassFeatures url={e.url} />
+                //         </div>
+                //     )
+                // })
 
                 this.setState({
                     name: name,
                     subclass_flavor: subclass_flavor,
                     desc: desc,
-                    features: features,
+                    // features: features,
                 })
             })
             .catch((error) => {
                 console.error('Error: ', error);
             })
+    }
+
+    componentWillUnmount() {
+        const abortController = new AbortController()
+        abortController.abort()
     }
 
     render() {
@@ -57,7 +62,7 @@ export default class Subclass extends Component{
                 <div>{ this.state.name }</div>
                 <div>Subclass Flavor: { this.state.subclass_flavor }</div>
                 <div>Description: { this.state.desc }</div>
-                <div>Features: { this.state.features }</div>
+                {/* <div>Features: { this.state.features }</div> */}
             </div>
         )
     }

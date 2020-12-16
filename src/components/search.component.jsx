@@ -3,11 +3,13 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import '../css/search.css';
 import axios from 'axios';
 import Spells from './spells.component.jsx';
-import Class from './classes.component.jsx';
+import Classes from './classes.component.jsx';
 import Select from 'react-select';
 import Monsters from './monsters.component.jsx';
 import Races from './races.component.jsx';
 import Equipment from './equipment.component.jsx';
+import Skills from './Skills.jsx'
+import AbilityScores from './AbilityScores.jsx';
 
 const customStyles = {
   option: (provided, state) => ({
@@ -51,6 +53,7 @@ export default class Search extends Component {
       isMonstersTrue: false,
       isRacesTrue: false,
       isEquipmentTrue: false,
+      isSkillsTrue: false,
       resultUrl: '',
       render: true,
       value: ''
@@ -109,6 +112,8 @@ export default class Search extends Component {
       isRacesTrue: false,
       isMonstersTrue: false,
       isEquipmentTrue: false,
+      isSkillsTrue: false,
+      isAbilityScoresTrue: false,
       render: true,
       category: this.state.category,
     },
@@ -134,6 +139,8 @@ export default class Search extends Component {
       isMonstersTrue: false,
       isRacesTrue: false,
       isEquipmentTrue: false,
+      isSkillsTrue: false,
+      isAbilityScoresTrue: false,
       render: true,
       category: name
     },
@@ -150,6 +157,8 @@ export default class Search extends Component {
       const monsters = this.state.category === 'Monsters'
       const races = this.state.category === 'Races'
       const equipment = this.state.category === 'Equipment'
+      const skills = this.state.category === 'Skills'
+      const abilityScores = this.state.category === 'Ability-Scores'
   
       return (
   
@@ -160,7 +169,7 @@ export default class Search extends Component {
                 
                 <div className="desc-wrapper">
                 <h6 className="search-name">{result.name}</h6>
-                  { (spells || classes || monsters || races || equipment) && 
+                  { (spells || classes || monsters || races || equipment || skills || abilityScores) && 
                     <button onClick={() => {
                       this.setState({ 
                         resultUrl: result.url, 
@@ -168,7 +177,9 @@ export default class Search extends Component {
                         isClassesTrue: classes,
                         isMonstersTrue: monsters,
                         isRacesTrue: races,
-                        isEquipmentTrue: equipment, 
+                        isEquipmentTrue: equipment,
+                        isSkillsTrue: skills,
+                        isAbilityScoresTrue: abilityScores, 
                         render: false 
                       })
                       console.log(this.state);
@@ -191,6 +202,8 @@ export default class Search extends Component {
       isMonstersTrue: false,
       isRacesTrue: false,
       isEquipmentTrue: false,
+      isSkillsTrue: false,
+      isAbilityScoresTrue: false,
     })
   }
 
@@ -201,7 +214,7 @@ export default class Search extends Component {
       )
     } else if (this.state.isClassesTrue) {
       return (
-        <Class  url={this.state.resultUrl} />
+        <Classes  url={this.state.resultUrl} />
       )
     } else if (this.state.isMonstersTrue) {
       return (
@@ -214,6 +227,14 @@ export default class Search extends Component {
     } else if (this.state.isEquipmentTrue) {
       return(
         <Equipment url={this.state.resultUrl} />
+      )
+    } else if (this.state.isSkillsTrue) {
+      return (
+        <Skills url={this.state.resultUrl} />
+      )
+    } else if (this.state.isAbilityScoresTrue) {
+      return(
+        <AbilityScores url={this.state.resultUrl} />
       )
     }
   }
