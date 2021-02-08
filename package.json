@@ -18,7 +18,7 @@
     "express": "^4.17.1",
     "history": "^5.0.0",
     "jsonwebtoken": "^8.5.1",
-    "marked": "^1.2.0",
+    "marked": "^2.0.0",
     "mongoose": "^5.10.7",
     "prop-types": "^15.7.2",
     "react": "^16.13.1",
