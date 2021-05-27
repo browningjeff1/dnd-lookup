@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { api } from '../functions/ApiCall';
+import React, { useState, useEffect } from "react";
+import { api } from "../functions/ApiCall";
 
 export default function Proficiencies(props) {
   const [data, setData] = useState(null);
@@ -12,32 +12,32 @@ export default function Proficiencies(props) {
   useEffect(() => {
     const abortController = new AbortController();
 
-    fetchData()
+    fetchData();
 
     return () => {
-      abortController.abort()
-    }
-  })
+      abortController.abort();
+    };
+  });
 
-  return(
+  return (
     <div>
-      {data && <div className="proficienciesContainer">
-        <h3 className="name-container">{ data.name }</h3>
-        <div className="profClassesContainer border">
-          {data.classes.length && data.classes.map((profClass) => {
-            return(
-            <div key={profClass.index}>{ profClass.name }</div>
-            )
-          }) }
+      {data && (
+        <div className="proficienciesContainer">
+          <h3 className="name-container">{data.name}</h3>
+          <div className="profClassesContainer border">
+            {data.classes.length &&
+              data.classes.map((profClass) => {
+                return <div key={profClass.index}>{profClass.name}</div>;
+              })}
+          </div>
+          <div className="profRacesContainer border">
+            {data.races.length &&
+              data.races.map((races) => {
+                return <div key={races.index}>{races.name}</div>;
+              })}
+          </div>
         </div>
-        <div className="profRacesContainer border">
-          {data.races.length && data.races.map((races) => {
-            return(
-              <div key={races.index}>{ races.name }</div>
-            )
-          })}
-        </div>
-      </div> }
+      )}
     </div>
-  )
+  );
 }
