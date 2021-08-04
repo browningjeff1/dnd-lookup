@@ -3,13 +3,13 @@ import Subclass from "./class-components/subclasses.component.jsx";
 import StartingEquipment from "./class-components/StartingEquipment.jsx";
 import ClassLevels from "./class-components/ClassLevels.jsx";
 import "../css/classes.css";
-import AuthService from "../services/auth.service";
+// import AuthService from "../services/auth.service";
 import { api } from "../functions/ApiCall.js";
 
 export default function Classes(props) {
   const [data, setData] = useState(null);
-  const [saved, setSaved] = useState(null);
-  const [currentUser, setCurrentUser] = useState(AuthService.getCurrentUser());
+  // const [saved, setSaved] = useState(null);
+  // const [currentUser, setCurrentUser] = useState(AuthService.getCurrentUser());
 
   async function fetchData() {
     const dataResult = await api.ApiCall(props.url);
@@ -25,41 +25,41 @@ export default function Classes(props) {
     };
   }, []);
 
-  useEffect(() => () => console.log("unmount"), []);
+  // useEffect(() => () => console.log("unmount"), []);
 
-  const handleSaveClick = (e) => {
-    e.preventDefault();
-    console.log(currentUser);
-    const url = this.props.url;
-    AuthService.save(url, currentUser);
-  };
+  // const handleSaveClick = (e) => {
+  //   e.preventDefault();
+  //   console.log(currentUser);
+  //   const url = this.props.url;
+  //   AuthService.save(url, currentUser);
+  // };
 
-  const handleUnsaveClick = (e) => {
-    e.preventDefault();
-    console.log(currentUser);
-    const url = this.props.url;
-    AuthService.unsave(url, currentUser);
-  };
+  // const handleUnsaveClick = (e) => {
+  //   e.preventDefault();
+  //   console.log(currentUser);
+  //   const url = this.props.url;
+  //   AuthService.unsave(url, currentUser);
+  // };
 
-  const button = () => {
-    const button = [];
-    if (saved) {
-      if (saved.includes(props.url)) {
-        button.push(<button onClick={handleUnsaveClick}>Unsave</button>);
-      } else {
-        button.push(<button onClick={handleSaveClick}>Save</button>);
-      }
-    } else {
-      button.push(<button onClick={handleSaveClick}>Save</button>);
-    }
-    return button;
-  };
+  // const button = () => {
+  //   const button = [];
+  //   if (saved) {
+  //     if (saved.includes(props.url)) {
+  //       button.push(<button onClick={handleUnsaveClick}>Unsave</button>);
+  //     } else {
+  //       button.push(<button onClick={handleSaveClick}>Save</button>);
+  //     }
+  //   } else {
+  //     button.push(<button onClick={handleSaveClick}>Save</button>);
+  //   }
+  //   return button;
+  // };
 
   return (
     <div>
       {data && (
         <div id={props.id} className="classContainer">
-          {button()}
+          {/* {button()} */}
           <div>
             <a href="#proficiency">Proficiencies</a>
             <a href="#starting-equipment">Starting Equipment</a>
